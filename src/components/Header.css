@@ -1,0 +1,36 @@
+.navbar_menu {
+  width: 100%;
+  background: black;
+  top: 0;
+  height: 70px;
+  padding: 13px 10% 0 2%;
+  position: sticky;
+  z-index: 100;
+}
+
+.logo {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  float: left;
+  padding-top: 3px;
+}
+.logo:hover {
+  color: white;
+  text-decoration: none;
+  font-size: 24px;
+  font-style: italic;
+}
+
+.arama {
+  width: 85%;
+  display: block;
+  float: left;
+  position: absolute;
+  left: 13%;
+  right: 2%;
+}
+.input-group span {
+  font-size: 19px;
+  color: white;
+}
