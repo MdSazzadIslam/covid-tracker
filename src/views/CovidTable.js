@@ -58,6 +58,16 @@ const CovidTable = ({ onchangeHandler }) => {
   };
 
   const fetchCovidRecordByGeoLocation = async (countryName) => {
+    debugger;
+    if (
+      countryName === null ||
+      countryName === undefined ||
+      countryName === ""
+    ) {
+      countryName = JSON.parse(localStorage.getItem("location"))["country"];
+      console.log(countryName);
+    }
+    debugger;
     setLoading(true);
 
     await axios
@@ -74,16 +84,21 @@ const CovidTable = ({ onchangeHandler }) => {
   };
 
   useEffect(() => {
-    const tempcountries = JSON.parse(localStorage.getItem("countries"));
-    tempcountries ? setCountries(tempcountries) : fetchCountries();
+    debugger;
 
-    fetchCovidRecords();
-    const tempLocation = JSON.parse(localStorage.getItem("location"));
-    tempLocation ? setLocation(tempLocation) : fetchLocation();
-    const tempSummary = JSON.parse(localStorage.getItem("summary"));
-    tempSummary
-      ? setLocationRecords(tempSummary)
-      : fetchCovidRecordByGeoLocation(tempLocation.country);
+    async function fetchData() {
+      const tempcountries = JSON.parse(localStorage.getItem("countries"));
+      tempcountries ? setCountries(tempcountries) : await fetchCountries();
+
+      fetchCovidRecords();
+      const tempLocation = JSON.parse(localStorage.getItem("location"));
+      tempLocation ? setLocation(tempLocation) : await fetchLocation();
+      const tempSummary = JSON.parse(localStorage.getItem("summary"));
+      tempSummary
+        ? setLocationRecords(tempSummary)
+        : await fetchCovidRecordByGeoLocation("");
+    }
+    fetchData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   onchangeHandler = (name) => {
