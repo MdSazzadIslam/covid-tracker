@@ -1,7 +1,5 @@
 .footer_title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
   background-color: black;
   height: 40px;
 }
