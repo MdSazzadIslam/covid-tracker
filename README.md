@@ -2,7 +2,7 @@
 
 Don't forget to give this repo a ⭐ if you like this repo and want to appreciate my efforts.
 
-This application is deployed on Netlify. Please check it out https://ecommerce-bd.netlify.app
+This application is deployed on Netlify. Please check it out https://covid-tracker-bd.netlify.app/
 
 
 ![Home](https://user-images.githubusercontent.com/63356649/120084741-920fe300-c0f4-11eb-9b64-808440294c56.JPG)
