@@ -119,6 +119,9 @@ const CovidTable = ({ onchangeHandler }) => {
     <div className="container py-5">
       <div className="row py-5">
         <div className="col-lg-10 mx-auto">
+          <h4 style={{ textAlign: "center" }}>
+            Covid summary status of {location.country}
+          </h4>
           <Summary summary={locationRecords} title={location} />
           <div className="card rounded shadow border-0">
             <div className="card-body p-5 bg-white rounded">

@@ -71,9 +71,6 @@ const Summary = ({ summary, title }) => {
           </div>
         </div>
       </div>
-      <h4 style={{ textAlign: "center" }}>
-        Covid summary status of {title.country}
-      </h4>
     </div>
   );
 };
