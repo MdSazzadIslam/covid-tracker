@@ -1,3 +1,11 @@
+.fixed_header {
+  overflow: auto;
+}
+.fixed_header table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
 .covid_table {
   box-sizing: border-box;
   margin-left: 50px;

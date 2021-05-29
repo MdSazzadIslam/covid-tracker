@@ -1,24 +1,70 @@
 import React, { useState, useEffect } from "react";
 import TableRow from "../components/TableRow";
+import Countries from "../components/Countries";
 import axios from "axios";
-
-import "./CovidTable.css";
+import Summary from "../components/Summary";
 import Loader from "../components/Loader";
-const CovidTable = () => {
-  const [records, setRecords] = useState([]);
-  const [loading, setLoading] = useState(false);
+import "./CovidTable.css";
 
-  const fetchData = async () => {
-    debugger;
-    setLoading(true);
-    console.log(loading);
+const CovidTable = ({ onchangeHandler }) => {
+  const [records, setRecords] = useState([]);
+  const [filterRecords, setFilterRecords] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [location, setLocation] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [locationRecords, setLocationRecords] = useState("");
+
+  const fetchLocation = async () => {
     await axios
-      .get("https://coronavirus-19-api.herokuapp.com/countries")
+      .get("http://ip-api.com/json")
       .then((res) => {
-        debugger;
+        setLocation(res.data);
+        localStorage.setItem("location", JSON.stringify(res.data));
+        console.log(location);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const fetchCountries = async () => {
+    await axios
+      .get("https://restcountries.eu/rest/v2/all")
+      .then((res) => {
+        setCountries(res.data);
+        localStorage.setItem("countries", JSON.stringify(res.data));
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.warn(err);
+        setLoading(false);
+      });
+  };
+
+  const fetchCovidRecords = async () => {
+    setLoading(true);
+    await axios
+      .get(process.env.REACT_APP_API_URL)
+      .then(async (res) => {
         setRecords(res.data);
-        console.log(res.data);
-        console.log(loading);
+        console.log(records);
+        setFilterRecords("");
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.warn(err);
+        setLoading(false);
+      });
+  };
+
+  const fetchCovidRecordByGeoLocation = async (countryName) => {
+    setLoading(true);
+
+    await axios
+      .get(process.env.REACT_APP_API_URL + `/${countryName}`)
+      .then(async (res) => {
+        setLocationRecords(res.data);
+        localStorage.setItem("summary", JSON.stringify(res.data));
         setLoading(false);
       })
       .catch((err) => {
@@ -28,31 +74,48 @@ const CovidTable = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    const tempcountries = JSON.parse(localStorage.getItem("countries"));
+    tempcountries ? setCountries(tempcountries) : fetchCountries();
+
+    fetchCovidRecords();
+    const tempLocation = JSON.parse(localStorage.getItem("location"));
+    tempLocation ? setLocation(tempLocation) : fetchLocation();
+    const tempSummary = JSON.parse(localStorage.getItem("summary"));
+    tempSummary
+      ? setLocationRecords(tempSummary)
+      : fetchCovidRecordByGeoLocation(tempLocation.country);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  onchangeHandler = (name) => {
+    if (name) {
+      let filterCountry = records.filter((item) => item.country === name);
+      if (filterCountry.length > 0) {
+        setFilterRecords(filterCountry);
+      }
+    }
+  };
+
   if (loading === true) {
-    debugger;
     return <Loader />;
   }
+
   return (
     <div className="container py-5">
       <div className="row py-5">
         <div className="col-lg-10 mx-auto">
+          <Summary summary={locationRecords} />
           <div className="card rounded shadow border-0">
             <div className="card-body p-5 bg-white rounded">
               <div className="table-responsive">
-                <input
-                  type="text"
-                  className="from-control"
-                  style={{ width: "100%" }}
-                  placeholder="Enter country name for search"
-                />
-                <table
-                  id="example"
-                  style={{ width: "100%" }}
-                  className="table table-striped table-bordered"
-                >
+                {filterRecords.length > 0 ? (
+                  <button onClick={() => fetchCovidRecords()}>
+                    <i class="fa fa-refresh fa-spin"></i>Show all
+                  </button>
+                ) : null}
+
+                <Countries countries={countries} onChange={onchangeHandler} />
+
+                <table className="table table-striped table-bordered">
                   <thead>
                     <tr>
                       <th>Country</th>
@@ -67,7 +130,11 @@ const CovidTable = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <TableRow records={records} />
+                    {filterRecords.length > 0 ? (
+                      <TableRow records={filterRecords} />
+                    ) : (
+                      <TableRow records={records} />
+                    )}
                   </tbody>
                   <tfoot>
                     <tr>
