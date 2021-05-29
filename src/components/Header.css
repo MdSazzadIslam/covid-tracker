@@ -6,6 +6,7 @@
   padding: 13px 10% 0 2%;
   position: sticky;
   z-index: 100;
+  position: fixed;
 }
 
 .logo {

@@ -1,7 +1,7 @@
 import React from "react";
 import "./Summary.css";
-const Summary = ({ summary }) => {
-  console.log("Summary", summary);
+const Summary = ({ summary, title }) => {
+  console.log(title);
   return (
     <div className="col-md-12">
       <div className="row ">
@@ -11,6 +11,7 @@ const Summary = ({ summary }) => {
               <div className="card-icon card-icon-large">
                 <i className="fas fa-shopping-cart" />
               </div>
+
               <div className="mb-4">
                 <h5 className="card-title mb-0">New Cases</h5>
               </div>
@@ -83,6 +84,9 @@ const Summary = ({ summary }) => {
           </div>
         </div>
       </div>
+      <h4 style={{ textAlign: "center" }}>
+        Covid summary status of {title.country}
+      </h4>
     </div>
   );
 };
