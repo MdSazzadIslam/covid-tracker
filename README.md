@@ -1,8 +1,7 @@
 # Getting Started with Create React App
 
 Don't forget to give this repo a ⭐ if you like this repo and want to appreciate my efforts
-This application is deployed on Netlify. Please check it out https://ecommerce-bd.netlify.app![Home](https://user-images.githubusercontent.com/63356649/120084729-7f95a980-c0f4-11eb-9584-570d4d7829eb.JPG)
-
+This application is deployed on Netlify. Please check it out https://ecommerce-bd.netlify.app
 ![Home](https://user-images.githubusercontent.com/63356649/120084741-920fe300-c0f4-11eb-9b64-808440294c56.JPG)
 
 
