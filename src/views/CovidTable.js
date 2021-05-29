@@ -16,11 +16,10 @@ const CovidTable = ({ onchangeHandler }) => {
 
   const fetchLocation = async () => {
     await axios
-      .get("http://ip-api.com/json")
+      .get("https://extreme-ip-lookup.com/json/")
       .then((res) => {
         setLocation(res.data);
         localStorage.setItem("location", JSON.stringify(res.data));
-        console.log("location", location);
       })
       .catch((err) => {
         console.log(err);
@@ -33,7 +32,7 @@ const CovidTable = ({ onchangeHandler }) => {
       .then((res) => {
         setCountries(res.data);
         localStorage.setItem("countries", JSON.stringify(res.data));
-        console.log("countries", res.data);
+
         setLoading(false);
       })
       .catch((err) => {
@@ -48,7 +47,7 @@ const CovidTable = ({ onchangeHandler }) => {
       .get(process.env.REACT_APP_API_URL)
       .then(async (res) => {
         setRecords(res.data);
-        console.log("Data", records);
+
         setFilterRecords("");
         setLoading(false);
       })
@@ -66,7 +65,6 @@ const CovidTable = ({ onchangeHandler }) => {
       countryName === ""
     ) {
       countryName = JSON.parse(localStorage.getItem("location"))["country"];
-      console.log(countryName);
     }
     debugger;
     setLoading(true);
@@ -75,7 +73,7 @@ const CovidTable = ({ onchangeHandler }) => {
       .get(process.env.REACT_APP_API_URL + `/${countryName}`)
       .then(async (res) => {
         setLocationRecords(res.data);
-        console.log("Summarty", records);
+
         localStorage.setItem("summary", JSON.stringify(res.data));
         setLoading(false);
       })
@@ -91,15 +89,15 @@ const CovidTable = ({ onchangeHandler }) => {
     async function fetchData() {
       const tempcountries = JSON.parse(localStorage.getItem("countries"));
       tempcountries ? setCountries(tempcountries) : await fetchCountries();
-      console.log(tempcountries);
+
       fetchCovidRecords();
       const tempLocation = JSON.parse(localStorage.getItem("location"));
       tempLocation ? setLocation(tempLocation) : await fetchLocation();
-      console.log(tempLocation);
+
       const tempSummary = JSON.parse(localStorage.getItem("summary"));
       tempSummary
         ? setLocationRecords(tempSummary)
-        : await fetchCovidRecordByGeoLocation("");
+        : await fetchCovidRecordByGeoLocation(location);
     }
     fetchData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
