@@ -47,7 +47,6 @@ const CovidTable = ({ onchangeHandler }) => {
       .get(process.env.REACT_APP_API_URL)
       .then(async (res) => {
         setRecords(res.data);
-
         setFilterRecords("");
         setLoading(false);
       })
@@ -73,8 +72,8 @@ const CovidTable = ({ onchangeHandler }) => {
       .get(process.env.REACT_APP_API_URL + `/${countryName}`)
       .then(async (res) => {
         setLocationRecords(res.data);
-
         localStorage.setItem("summary", JSON.stringify(res.data));
+        console.log("Axios", res.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -94,15 +93,13 @@ const CovidTable = ({ onchangeHandler }) => {
       const tempLocation = JSON.parse(localStorage.getItem("location"));
       tempLocation ? setLocation(tempLocation) : await fetchLocation();
 
-      const tempSummary = JSON.parse(localStorage.getItem("summary"));
-      tempSummary
-        ? setLocationRecords(tempSummary)
-        : await fetchCovidRecordByGeoLocation(location);
+      await fetchCovidRecordByGeoLocation(location);
     }
     fetchData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   onchangeHandler = (name) => {
+    debugger;
     if (name) {
       let filterCountry = records.filter((item) => item.country === name);
       if (filterCountry.length > 0) {
